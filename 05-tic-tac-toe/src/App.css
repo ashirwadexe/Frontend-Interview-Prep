@@ -1,0 +1,24 @@
+.board-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board-container {
+    margin: 20px;
+    text-align: center;
+    
+}
+
+body {
+    background-color: slateblue;
+}
+
+button {
+    margin: 20px;
+    padding: 5px 10px;
+    border: 2px solid white;
+    background-color: aqua;
+    font-weight: 600;
+
+}
