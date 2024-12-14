@@ -1,16 +1,17 @@
-import { Circle, CircleCheck, ShieldX, Trash } from 'lucide-react'
+
+import { Circle, CircleCheck, Trash2 } from 'lucide-react'
 import React from 'react'
 
-const TodoItems = ({text, id, isCompleted, deleteTodo, toggle}) => {
+const TodoItems = ({text, deleteTodo, id, toggle, isCompleted}) => {
   return (
-    <div className='flex items-center my-3 gap-2'>
-        <div className='flex flex-1 items-center gap-2'>
+    <div className='flex justify-between'>
+        <div className='flex gap-2 text-xl items-center mb-3'>
             {
-                isCompleted ? <CircleCheck onClick={() => {toggle(id)}}/> : <Circle onClick={() => {toggle(id)}}/>
+                isCompleted ? <CircleCheck className='text-orange-600' onClick={() => {toggle(id)}}/> : <Circle onClick={() => {toggle(id)}} />
             }
-            <p className={`text-slate-700 text-xl ${isCompleted ? "line-through" : ""}`}>{text}</p>
+            <p className={`${isCompleted ? "line-through text-orange-600" : ""}`}>{text}</p>
         </div>
-        <Trash onClick={() => {deleteTodo(id)}} />
+        <Trash2 onClick={() => (deleteTodo(id))}/>
     </div>
   )
 }
