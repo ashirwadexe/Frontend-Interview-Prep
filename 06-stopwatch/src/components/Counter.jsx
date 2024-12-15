@@ -1,81 +1,92 @@
-import React from 'react'
-import '../App.css'
-import { useState } from 'react'
-import { useRef } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import '../App.css';
 
 const Counter = () => {
 
-    const [time, setTime] = useState(0);
-    const [isActive, setIsActive] = useState(false);
-    const [isPause, setIsPause] = useState(false);
+    const [time, setTime] = useState(0); // Time in seconds
+    const [isActive, setIsActive] = useState(false); // Timer running state
+    const [isPaused, setIsPaused] = useState(false); // Timer pause state
+    const intervalRef = useRef(null); // Reference to interval ID
 
-    const intervalRef = useRef(null);
-
-    //handling input from the user
+    // Handle input from the user and set time in seconds
     const handleInput = (event) => {
-        setTime(parseInt(event.target.value * 60));
+        const input = parseInt(event.target.value, 10);
+        if (!isNaN(input) && input > 0) {
+            setTime(input * 60);
+        }
     };
 
-    const formateTime = () => {
-        const min = String(Math.floor(time/60)).padStart(2,'0');
-        const sec = String(time%60).padStart(2, '0');
-
-        return `${min}:${sec}`;
+    // Format time as MM:SS
+    const formatTime = () => {
+        const minutes = String(Math.floor(time / 60)).padStart(2, '0');
+        const seconds = String(time % 60).padStart(2, '0');
+        return `${minutes}:${seconds}`;
     };
 
+    // Start the countdown
     const handleStart = () => {
-        setIsActive(true);
-        setIsPause(false);
+        if (!isActive) {
+            setIsActive(true);
+            setIsPaused(false);
+        }
     };
 
-    const hanldePause = () => {
-        setIsPause(!isPause);
+    // Pause or resume the countdown
+    const handlePauseResume = () => {
+        setIsPaused((prev) => !prev);
     };
 
-    const hanldeReset = () => {
-         clearInterval(intervalRef.current);
-         setTime(0);
-         setIsActive(false);
-         setIsPause(false);
+    // Reset the countdown
+    const handleReset = () => {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null; 
+        setTime(0);
+        setIsActive(false);
+        setIsPaused(false);
     };
 
+    // Countdown logic
     useEffect(() => {
-        if(isActive && !isPause && time > 0) {
+        if (isActive && !isPaused && time > 0) {
             intervalRef.current = setInterval(() => {
-                setTime((prev) => prev - 1);
+                setTime((prevTime) => {
+                    if (prevTime <= 1) {
+                        clearInterval(intervalRef.current);
+                        intervalRef.current = null;
+                        setIsActive(false);
+                        alert("Time is up !!!");
+                        return 0;
+                    }
+                    return prevTime - 1;
+                });
             }, 1000);
-        }
-        else if (time === 0) {
-            clearInterval(intervalRef.current);
-            setIsActive(false);
-            alert("Time is up !!!");
-        }
+        } 
 
-        //cleanup function
+        // Cleanup function to clear interval on component unmount or state change
         return () => clearInterval(intervalRef.current);
-    }, [isActive, isPause, time]);
+    }, [isActive, isPaused]);
 
     return (
         <div className='countdown-timer'>
-            <h1>Stopwatch</h1>
+            <h1>Countdown Timer</h1>
 
             <div className='timer-display'>
                 <input 
-                    type="number"
-                    placeholder='Enter time in minutes'
-                    onChange={handleInput}
+                    type="number" 
+                    placeholder='Enter time in minutes' 
+                    onChange={handleInput} 
+                    disabled={isActive} 
                 />
-                <div>{formateTime()}</div>
+                <div>{formatTime()}</div>
             </div>
 
             <div className='timer-controls'>
-                <button onClick={handleStart} disabled={isActive && !isPause}>Start</button>
-                <button onClick={hanldePause}>{!isPause ? "Pause" : "Resume"}</button>
-                <button onClick={hanldeReset}>Reset</button>
+                <button onClick={handleStart} disabled={isActive && !isPaused}>Start</button>
+                <button onClick={handlePauseResume} disabled={!isActive}>{!isPaused ? "Pause" : "Resume"}</button>
+                <button onClick={handleReset}>Reset</button>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Counter
+export default Counter;
