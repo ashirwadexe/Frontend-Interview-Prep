@@ -1,25 +1,54 @@
-//CONTROLLER INPUT
+// //CONTROLLER INPUT
 
-import React, { useState } from 'react'
+// import React, { useState } from 'react'
+
+// const App = () => {
+
+//   const [inputValue, setInputValue] = useState('');
+
+//   const inputHandler = (event) => {
+//     setInputValue(event.target.value);
+//   }
+
+//   return (
+//     <div>
+//       <h1>Input Learning</h1>
+//       <input 
+//         type="text" 
+//         value={inputValue}
+//         onChange={inputHandler}
+//         placeholder='Enter Something...'
+//       />
+//       <p>{inputValue}</p>
+//     </div>
+//   )
+// }
+
+// export default App
+
+
+//UNCONTROLLER INPUT
+
+import React, { useRef } from 'react'
 
 const App = () => {
 
-  const [inputValue, setInputValue] = useState('');
+  const inputRef = useRef(null);
 
   const inputHandler = (event) => {
-    setInputValue(event.target.value);
+    const inputText = inputRef.current.value;
+    console.log(inputText);
   }
 
   return (
     <div>
       <h1>Input Learning</h1>
-      <input 
-        type="text" 
-        value={inputValue}
-        onChange={inputHandler}
-        placeholder='Enter Something...'
+      <input
+        type="text"
+        placeholder='enter something here...'
+        ref={inputRef} 
       />
-      <p>{inputValue}</p>
+      <button onClick={inputHandler}>Show Input</button>
     </div>
   )
 }
