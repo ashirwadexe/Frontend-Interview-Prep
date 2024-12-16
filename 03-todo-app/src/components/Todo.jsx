@@ -23,13 +23,13 @@ const Todo = () => {
             isCompleted: false
         };
 
-        setTodo((prev) => [...todo, newTodo]); 
+        setTodo((prev) => [...prev, newTodo]); 
         inputRef.current.value = "";
     };
 
     const deleteTodo = (id) => {
         setTodo((prevTodos) => {
-            return prevTodos.filter(todo => todo.id !== id);
+            return prevTodos.filter((todo) => (todo.id !== id));
         });
     };
 
@@ -85,3 +85,10 @@ const Todo = () => {
 }
 
 export default Todo
+
+
+// const deleteTodo = (id) => {
+//     setTodo((prevTodos) => {
+//         return prevTodos.filter(todo => todo.id !== id);
+//     });
+// };
