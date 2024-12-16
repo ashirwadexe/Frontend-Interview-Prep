@@ -26,6 +26,11 @@
 
 // export default App
 
+
+//--------------------------------------------------------------------------
+
+
+
 //UNCONTROLLER INPUT
 
 // import React, { useRef } from 'react'
@@ -54,6 +59,10 @@
 
 // export default App
 
+
+//--------------------------------------------------------------------------
+
+
 // import React, { useState } from "react";
 
 // const App = () => {
@@ -79,42 +88,126 @@
 // export default App;
 
 
+//--------------------------------------------------------------------------
+
+
+// import React, { useState } from 'react'
+
+// const App = () => {
+//   const [name, setName] = useState('');
+//   const [email, setEmail] = useState('');
+
+//   const nameHandler = (event) => {
+//     setName(event.target.value);
+//   };
+
+//   const emailHandler = (event) => {
+//     setEmail(event.target.value);
+//   };
+
+//   return (
+//     <div>
+//       <input 
+//         type="text"
+//         id='name'
+//         placeholder='enter name' 
+//         onChange={nameHandler}
+//         value={name}
+//       />
+
+//       <br />
+//       <br />
+
+//       <input 
+//         type="email" 
+//         id='email'
+//         placeholder='enetr email'
+//         value={email}
+//         onChange={emailHandler}
+//       />
+
+//       <h1>Hello, {name} - Your email: {email}</h1>
+//     </div>
+//   )
+// }
+
+// export default App
+
+
+//--------------------------------------------------------------------------
+
 import React, { useState } from 'react'
 
 const App = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
 
-  const nameHandler = (event) => {
-    setName(event.target.value);
+  const inputHandler =(e) => {
+    const {name, value} = e.target;
+    setFormData((prevData) => ({
+      ...prevData, [name]: value
+    }));
   };
 
-  const emailHandler = (event) => {
-    setEmail(event.target.value);
-  };
+  const submitHandler = (e) => {
+    e.preventDefault();
+    alert(`
+      Form Submitted!!!\n
+      Name: ${formData.name}\n
+      Email: ${formData.email}\n
+      Password: ${formData.password}\n
+    `)
+  }
 
   return (
     <div>
-      <input 
-        type="text"
-        id='name'
-        placeholder='enter name' 
-        onChange={nameHandler}
-        value={name}
-      />
+      <h1>Multiple Input</h1>
 
-      <br />
-      <br />
+      <form onSubmit={submitHandler}>
+        <input 
+          type="text" 
+          id='name'
+          name='name'
+          value={formData.name}
+          onChange={inputHandler}
+          placeholder='enter name'
+          required
+        />
 
-      <input 
-        type="email" 
-        id='email'
-        placeholder='enetr email'
-        value={email}
-        onChange={emailHandler}
-      />
+        <br />
+        <br />
 
-      <h1>Hello, {name} - Your email: {email}</h1>
+        <input 
+          type="email" 
+          id='email'
+          name='email'
+          value={formData.email}
+          onChange={inputHandler}
+          placeholder='enter email'
+          required
+        />
+        
+        <br />
+        <br />
+
+        <input 
+          type="password" 
+          id='password'
+          name='password'
+          value={formData.password}
+          onChange={inputHandler}
+          placeholder='enter password'
+          required
+        />
+
+        <br />
+        <br />
+
+        <button type='submit'>Submit</button>
+      </form>
     </div>
   )
 }
